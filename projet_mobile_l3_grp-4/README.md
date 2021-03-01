@@ -1,4 +1,4 @@
-# tp3_app
+# projet_mobile_l3_grp-4
 
 ## Project setup
 ```
