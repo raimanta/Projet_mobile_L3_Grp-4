@@ -1,110 +1,170 @@
 <template>
+    {{ check }}
+    <input type="checkbox" v-model="x" @click="checkTodos(x)"/>
+    
+    <div>
+        Filtrer :
+        <button v-on:click="changeFilter(1)">Toutes</button>
+        <button v-on:click="changeFilter(2)">A faire</button>
+        <button v-on:click="changeFilter(3)">Faites</button>
+    </div>
+    <br/>
+    <div>
+        <button v-on:click="deleteDone()">Supprimer les taches finies</button>
+    </div>
+    <br/>
+    <div>
+        <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
+        <button v-on:click="addTodo(this.newTodo)">Ajouter todo</button>
+    </div>
 
-    <input type="checkbox" id="allChecked" v-model="allChecked" v-on:change="checkAll()"/>
     <ul>
-        <li v-for="todo in filteredTodolist" :key="todo.id"
-            v-bind:class="(!todo.completed)? 'todo' : 'completed'">
-
+        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in filtered_todos" :key="todo.id">
+            <button class="bouton" v-on:click="suppTodo(todo.id)">Delete</button>
             <input type="checkbox" id="todo.completed" v-model="todo.completed"/>
-            {{ todo.name }}
-            <button v-on:click="suppTodo(todo.id)">-</button>
+            {{ todo.name }} : {{ aFaire(todo.completed) }}
         </li>
     </ul>
-
-    <p> {{ remainingTodo }} tâches à faire </p>
-    <ul>
-        <p><b>FILTRES</b></p>
-        <a href="." @click.prevent="unload" @click="filter='all'">     <li>Toutes </li></a>
-        <a href="." @click.prevent="unload" @click="filter='finish'">   <li>Faites </li></a>
-        <a href="." @click.prevent="unload" @click="filter='remaining'"><li>À faire</li></a>
-    </ul>
-
-    <button v-show="suppTodoButton" v-on:click="suppAllChecked">Supprimer les tâches faites</button>
-
 </template>
 
 <script>
 export default {
     name: 'Todolist',
-    data() {
-          return {
-            filter : "all",
-            allChecked : false,
-            nbTodos : 4,
-            todos: [
-              {
-                id: 1,
-                name : 'tache 1',
-                completed : false
-              },
-              {
-                id: 2,
-                name : 'tache 2',
-                completed: true
-              },
-              {
-                id: 3,
-                name : 'tache 3',
-                completed : false
-              },
-              {
-                id: 4,
-                name : 'tache 4',
-                completed: true
-              }
-            ],
-            newTodo: '',
-          }
+    props: {
+        
     },
-    methods:{
-        suppTodo(id){
-            this.todos.splice(id-1, 1)
-            for(let i=id-1; i<this.todos.length; i++){ this.todos[i].id -= 1 }
-        },
-        checkAll(){
-            for(let i=0; i<this.todos.length; i++){
-                this.todos[i].completed = this.allChecked
+    data() {
+        return {
+            todos: [
+            {
+                id: 1,
+                name : 'Courses',
+                completed : false
+            },
+            {
+                id: 2,
+                name : 'CV',
+                completed: true
+            },
+            {
+                id: 3,
+                name : 'Lettre de motivation',
+                completed: true
+            },
+            {
+                id: 4,
+                name : 'Reussir sa vie',
+                completed: true
             }
-        },
-        suppAllChecked(){
-            for(let i=0; i<this.todos.length; i++){
-                if(this.todos[i].completed){
-                    this.suppTodo((i+1))
-                    i--
+            ]
+            ,
+            newTodo: '',
+            filter: 'all',
+            x: true,
+            id: 5,
+        }
+    },
+    methods: {
+        suppTodo: function(id){
+            for(let index in this.todos){
+                if(this.todos[index].id==id){
+                    this.todos.splice(index,1);
+                    return;
                 }
             }
         },
-    },
-    props:{},
-    computed:{
-        remainingTodo(){
-            let result = 0
-            for(let i=0; i<this.todos.length; i++){
-                if(!this.todos[i].completed) result++
+        addTodo: function(nom){
+            this.todos[this.todos.length] = {
+                id: this.id,
+                name: nom,
+                completed: false
             }
-            return(result)
+            this.id++;
         },
-        filteredTodolist(){
-            let filteredlist
-            filteredlist = this.todos
-            if(this.filter === "remaining") filteredlist = this.todos.filter(todo => !todo.completed )
-            if(this.filter === "finish"   ) filteredlist = this.todos.filter(todo =>  todo.completed )
-
-            return(filteredlist)
+        checkTodos: function(boolean){
+            for(let index in this.todos){
+                if(boolean){
+                    this.todos[index].completed=true;
+                }
+                else {
+                    this.todos[index].completed=false;
+                }
+            }
         },
-        suppTodoButton(){
-            return( this.remainingTodo >= 0 && this.remainingTodo < this.todos.length )
+        changeFilter: function(int){
+            if(int==1){
+                this.filter="all";
+            }
+            else if(int==2){
+                this.filter="notDone";
+            }
+            else if(int==3){
+                this.filter="done";
+            }
+        },
+        deleteDone: function(){
+            let ids = [];
+            for(let index in this.todos){
+                if(this.todos[index].completed){
+                    ids.push(this.todos[index].id);
+                }
+            }
+            for(let id in ids){
+                this.suppTodo(ids[id]);
+            }
+        },
+        aFaire: function(boolean){
+            if(!boolean){
+                return "A faire !";
+            }
+            else {
+                return "Finito !";
+            }
         }
-
+    },
+    computed: {
+        filtered_todos: function(){
+            if(this.filter=="all"){
+                return this.todos;
+            }
+            else if(this.filter=="done"){
+                let list = [];
+                for(let index in this.todos){
+                    if(this.todos[index].completed){
+                        list.push(this.todos[index]);
+                    }
+                }
+                return list;
+            }
+            else if(this.filter=="notDone"){
+                let list = [];
+                for(let index in this.todos){
+                    if(!this.todos[index].completed){
+                        list.push(this.todos[index]);
+                    }
+                }
+                return list;
+            }
+            return null;
+        },
+        check: function(){
+            if(this.x){
+                return "Check All";
+            }
+            else {
+                return "Check None";
+            }
+        }
     }
 }
 </script>
 
-<style scoped>
-    li.todo {
-    color:red
-    }
-    li.completed {
-    color:green
-    }
+<style>
+
+.todo{
+    color: red;
+}
+.complet{
+    color: green;
+}
 </style>
