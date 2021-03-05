@@ -24,3 +24,17 @@ export function getFilteredTodos(state){
         return null;
     }
 }
+
+export function aFaire(){
+    return function(boolean){
+        if(!boolean) return "A faire !";
+        else return "Finito !";
+    }
+}
+
+export function check(){
+    return function(boolean){
+        if(boolean) return "Check";
+        else return "Uncheck";
+    }    
+}

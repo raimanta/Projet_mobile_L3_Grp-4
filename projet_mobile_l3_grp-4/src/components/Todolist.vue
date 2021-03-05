@@ -1,5 +1,5 @@
 <template>
-    {{ check }}
+    {{ check(this.x) }}
     <input type="checkbox" v-model="x" @click="checkTodos(x)"/>
     
     <div>
@@ -113,28 +113,12 @@ export default {
             for(let id in ids){
                 this.suppTodo(ids[id]);
             }
-        },
-        aFaire: function(boolean){
-            if(!boolean){
-                return "A faire !";
-            }
-            else {
-                return "Finito !";
-            }
         }
     },
     computed: {
-        ...mapGetters('todolist', ['getFilteredTodos']),
+        ...mapGetters('todolist', ['getFilteredTodos', 'aFaire', 'check']),
         filtered_todos(){
             return this.getFilteredTodos(this.filter);
-        },
-        check: function(){
-            if(this.x){
-                return "Check All";
-            }
-            else {
-                return "Check None";
-            }
         }
     }
 }
