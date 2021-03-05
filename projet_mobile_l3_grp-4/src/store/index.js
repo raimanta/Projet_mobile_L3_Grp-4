@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 import account from './account';
 import todolist from './todolist';
 
-export default createStore({
+export const store = createStore({
     debug : true,
     state: {
     },

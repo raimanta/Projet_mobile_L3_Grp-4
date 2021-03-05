@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters} from "vuex";
 export default {
     name: 'Todolist',
     props: {
@@ -123,29 +124,9 @@ export default {
         }
     },
     computed: {
-        filtered_todos: function(){
-            if(this.filter=="all"){
-                return this.todos;
-            }
-            else if(this.filter=="done"){
-                let list = [];
-                for(let index in this.todos){
-                    if(this.todos[index].completed){
-                        list.push(this.todos[index]);
-                    }
-                }
-                return list;
-            }
-            else if(this.filter=="notDone"){
-                let list = [];
-                for(let index in this.todos){
-                    if(!this.todos[index].completed){
-                        list.push(this.todos[index]);
-                    }
-                }
-                return list;
-            }
-            return null;
+        ...mapGetters('todolist', ['getFilteredTodos']),
+        filtered_todos(){
+            return this.getFilteredTodos(this.filter);
         },
         check: function(){
             if(this.x){
