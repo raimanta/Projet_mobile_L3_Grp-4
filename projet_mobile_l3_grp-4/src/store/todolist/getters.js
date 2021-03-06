@@ -1,5 +1,6 @@
 export function getFilteredTodos(state){
     return function(filter){
+        console.log(state.todos);
         if(filter=="all"){
             return state.todos;
         }
@@ -37,4 +38,8 @@ export function check(){
         if(boolean) return "Check";
         else return "Uncheck";
     }    
+}
+
+export function filter(state){
+    return state.filter;
 }

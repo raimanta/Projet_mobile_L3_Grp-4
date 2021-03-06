@@ -28,52 +28,18 @@
 </template>
 
 <script>
-import { mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 export default {
     name: 'Todolist',
-    props: {
-        
-    },
     data() {
         return {
-            todos: [
-            {
-                id: 1,
-                name : 'Courses',
-                completed : false
-            },
-            {
-                id: 2,
-                name : 'CV',
-                completed: true
-            },
-            {
-                id: 3,
-                name : 'Lettre de motivation',
-                completed: true
-            },
-            {
-                id: 4,
-                name : 'Reussir sa vie',
-                completed: true
-            }
-            ]
-            ,
             newTodo: '',
-            filter: 'all',
             x: true,
             id: 5,
         }
     },
     methods: {
-        suppTodo: function(id){
-            for(let index in this.todos){
-                if(this.todos[index].id==id){
-                    this.todos.splice(index,1);
-                    return;
-                }
-            }
-        },
+        ...mapActions('todolist', ['suppTodo', 'changeFilter', 'deleteDone']),
         addTodo: function(nom){
             this.todos[this.todos.length] = {
                 id: this.id,
@@ -92,17 +58,7 @@ export default {
                 }
             }
         },
-        changeFilter: function(int){
-            if(int==1){
-                this.filter="all";
-            }
-            else if(int==2){
-                this.filter="notDone";
-            }
-            else if(int==3){
-                this.filter="done";
-            }
-        },
+        /*
         deleteDone: function(){
             let ids = [];
             for(let index in this.todos){
@@ -114,9 +70,10 @@ export default {
                 this.suppTodo(ids[id]);
             }
         }
+        */
     },
     computed: {
-        ...mapGetters('todolist', ['getFilteredTodos', 'aFaire', 'check']),
+        ...mapGetters('todolist', ['getFilteredTodos', 'aFaire', 'check', 'filter']),
         filtered_todos(){
             return this.getFilteredTodos(this.filter);
         }
