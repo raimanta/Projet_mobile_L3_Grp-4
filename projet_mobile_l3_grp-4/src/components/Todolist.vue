@@ -1,6 +1,6 @@
 <template>
-    {{ check(this.x) }}
-    <input type="checkbox" v-model="x" @click="checkTodos(x)"/>
+    {{ check(boolean) }}
+    <input type="checkbox" v-model="boolean" @click="checkTodos(this.boolean)"/>
     
     <div>
         Filtrer :
@@ -19,7 +19,7 @@
     </div>
 
     <ul>
-        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in filtered_todos" :key="todo.id">
+        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(filter)" :key="todo.id">
             <button class="bouton" v-on:click="suppTodo(todo.id)">Delete</button>
             <input type="checkbox" id="todo.completed" v-model="todo.completed"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
@@ -34,43 +34,17 @@ export default {
     data() {
         return {
             newTodo: '',
-            x: true,
-            id: 5,
+            boolean: false,
         }
     },
     methods: {
-        ...mapActions('todolist', ['suppTodo', 'changeFilter', 'deleteDone']),
-        addTodo: function(nom){
-            this.todos[this.todos.length] = {
-                id: this.id,
-                name: nom,
-                completed: false
-            }
-            this.id++;
-        },
-        checkTodos: function(boolean){
-            for(let index in this.todos){
-                if(boolean){
-                    this.todos[index].completed=true;
-                }
-                else {
-                    this.todos[index].completed=false;
-                }
-            }
-        },
-        /*
-        deleteDone: function(){
-            let ids = [];
-            for(let index in this.todos){
-                if(this.todos[index].completed){
-                    ids.push(this.todos[index].id);
-                }
-            }
-            for(let id in ids){
-                this.suppTodo(ids[id]);
-            }
-        }
-        */
+        ...mapActions('todolist', [
+            'suppTodo',
+            'changeFilter',
+            'deleteDone',
+            'addTodo',
+            'checkTodos'
+        ]),
     },
     computed: {
         ...mapGetters('todolist', ['getFilteredTodos', 'aFaire', 'check', 'filter']),

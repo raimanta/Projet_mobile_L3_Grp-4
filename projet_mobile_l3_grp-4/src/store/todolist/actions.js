@@ -1,5 +1,4 @@
 export function suppTodo({commit}, id){
-    console.log(id);
     commit("suppTodo", id);
 }
 
@@ -8,6 +7,13 @@ export function deleteDone({commit}){
 }
 
 export function changeFilter({commit}, int){
-    console.log(int);
     commit("changeFilter", int);
+}
+
+export function addTodo({commit}, nom){
+    commit("addTodo", nom);
+}
+
+export function checkTodos({commit}, boolean){
+    commit("checkTodos", boolean);
 }

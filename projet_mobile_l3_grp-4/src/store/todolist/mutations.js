@@ -2,10 +2,9 @@ export function suppTodo(state, id){
     for(let index in state.todos){
         if(state.todos[index].id==id){
             state.todos.splice(index,1);
-            //return;
+            return;
         }
     }
-    console.log(state.todos);
 }
 
 export function changeFilter(state, int){
@@ -29,5 +28,25 @@ export function deleteDone(state){
         }
     for(let id in ids){
         suppTodo(state, ids[id]);
+    }
+}
+
+export function addTodo(state, nom){
+    state.todos[state.todos.length] = {
+        id: state.id,
+        name: nom,
+        completed: false
+    }
+    state.id++;
+}
+
+export function checkTodos(state, boolean){
+    for(let index in state.todos){
+        if(boolean){
+            state.todos[index].completed=false;
+        }
+        else {
+            state.todos[index].completed=true;
+        }
     }
 }

@@ -24,7 +24,7 @@ export default function () {
         ],
         newTodo: '',
         filter: 'all',
-        x: true,
+        boolean: true,
         id: 5,
     }
 }

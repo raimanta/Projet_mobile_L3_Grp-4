@@ -1,6 +1,5 @@
 export function getFilteredTodos(state){
     return function(filter){
-        console.log(state.todos);
         if(filter=="all"){
             return state.todos;
         }
@@ -42,4 +41,8 @@ export function check(){
 
 export function filter(state){
     return state.filter;
+}
+
+export function boolean(state){
+    return state.boolean;
 }
