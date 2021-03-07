@@ -24,29 +24,24 @@ export function deleteDone(state){
     for(let index in state.todos){
         if(state.todos[index].completed){
             ids.push(state.todos[index].id);
-            }
         }
+    }
     for(let id in ids){
         suppTodo(state, ids[id]);
     }
 }
 
 export function addTodo(state, nom){
-    state.todos[state.todos.length] = {
+    state.todos.push({
         id: state.id,
         name: nom,
         completed: false
-    }
+    });
     state.id++;
 }
 
 export function checkTodos(state, boolean){
-    for(let index in state.todos){
-        if(boolean){
-            state.todos[index].completed=false;
-        }
-        else {
-            state.todos[index].completed=true;
-        }
-    }
+    state.todos.forEach(todo => {
+        todo.completed = !boolean;
+    });
 }
