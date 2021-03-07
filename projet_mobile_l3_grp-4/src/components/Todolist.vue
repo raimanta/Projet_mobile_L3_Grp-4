@@ -1,7 +1,8 @@
 <template>
+    <p>Nombre de todo restantes : {{ numberNotDone }}</p>
     {{ check(boolean) }}
-    <input type="checkbox" v-model="boolean" @click="checkTodos(this.boolean)"/>
-    
+    <input type="checkbox" v-model="boolean" @click="checkTodos(boolean)"/>
+
     <div>
         Filtrer :
         <button v-on:click="changeFilter(1)">Toutes</button>
@@ -15,14 +16,18 @@
     <br/>
     <div>
         <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
-        <button v-on:click="addTodo(this.newTodo)">Ajouter todo</button>
+        <button v-on:click="addTodo(newTodo)">Ajouter todo</button>
     </div>
 
     <ul>
         <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(filter)" :key="todo.id">
-            <button class="bouton" v-on:click="suppTodo(todo.id)">Delete</button>
             <input type="checkbox" id="todo.completed" v-model="todo.completed"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
+            <div>
+                <button class="bouton" v-on:click="suppTodo(todo.id)">Delete</button>
+                <input type="text" v-model="todo.modify"/>
+                <button @click="modifyTodo(todo.id)">Modifier la Todo</button>
+            </div>
         </li>
     </ul>
 </template>
@@ -35,6 +40,7 @@ export default {
         return {
             newTodo: '',
             boolean: false,
+
         }
     },
     methods: {
@@ -43,11 +49,18 @@ export default {
             'changeFilter',
             'deleteDone',
             'addTodo',
-            'checkTodos'
+            'checkTodos',
+            'modifyTodo'
         ]),
     },
     computed: {
-        ...mapGetters('todolist', ['getFilteredTodos', 'aFaire', 'check', 'filter']),
+        ...mapGetters('todolist', [
+            'getFilteredTodos',
+            'aFaire',
+            'check',
+            'filter',
+            'numberNotDone'
+        ]),
         filtered_todos(){
             return this.getFilteredTodos(this.filter);
         }

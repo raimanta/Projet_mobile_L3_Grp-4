@@ -45,3 +45,12 @@ export function checkTodos(state, boolean){
         todo.completed = !boolean;
     });
 }
+
+export function modifyTodo(state, id){
+    for(let index in state.todos){
+        if(state.todos[index].id==id){
+            state.todos[index].name = state.todos[index].modify;
+            return;
+        }
+    }
+}

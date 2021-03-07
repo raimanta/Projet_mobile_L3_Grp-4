@@ -28,3 +28,7 @@ export function check(){
 export function filter(state){
     return state.filter;
 }
+
+export function numberNotDone(state){
+    return state.todos.filter(todo => !todo.completed).length;
+}

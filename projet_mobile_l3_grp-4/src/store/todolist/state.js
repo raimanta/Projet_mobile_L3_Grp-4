@@ -4,22 +4,26 @@ export default function () {
             {
                 id: 1,
                 name : 'Courses',
-                completed : false
+                completed : false,
+                modify: ""
             },
             {
                 id: 2,
                 name : 'CV',
-                completed: true
+                completed: true,
+                modify: ""
             },
             {
                 id: 3,
                 name : 'Lettre de motivation',
-                completed: true
+                completed: true,
+                modify: ""
             },
             {
                 id: 4,
                 name : 'Reussir sa vie',
-                completed: true
+                completed: true,
+                modify: ""
             }
         ],
         newTodo: '',

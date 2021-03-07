@@ -17,3 +17,7 @@ export function addTodo({commit}, nom){
 export function checkTodos({commit}, boolean){
     commit("checkTodos", boolean);
 }
+
+export function modifyTodo({commit}, id){
+    commit("modifyTodo", id);
+}
