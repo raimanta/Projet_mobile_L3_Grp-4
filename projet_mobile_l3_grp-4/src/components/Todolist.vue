@@ -1,7 +1,7 @@
 <template>
-    <p>Nombre de todo restantes : {{ numberNotDone }}</p>
-    {{ check(boolean) }}
-    <input type="checkbox" v-model="boolean" @click="checkTodos(boolean)"/>
+    <p>Nombre de todo restantes : {{ numberNotDone(idList) }}</p>
+    {{ check(checked) }}
+    <input type="checkbox" v-model="checked" @click="checkTodos({idList, checked})"/>
 
     <div>
         Filtrer :
@@ -11,36 +11,39 @@
     </div>
     <br/>
     <div>
-        <button v-on:click="deleteDone()">Supprimer les taches finies</button>
+        <button v-on:click="deleteDone(idList)">Supprimer les taches finies</button>
     </div>
     <br/>
     <div>
         <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
-        <button v-on:click="addTodo(newTodo)">Ajouter todo</button>
+        <button v-on:click="addTodo({idList, nom:newTodo})">Ajouter todo</button>
     </div>
 
     <ul>
-        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(filter)" :key="todo.id">
+        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(idList)" :key="todo.id">
             <input type="checkbox" id="todo.completed" v-model="todo.completed"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
             <div>
-                <button class="bouton" v-on:click="suppTodo(todo.id)">Delete</button>
+                <button class="bouton" v-on:click="suppTodo({idList, idTodo:todo.id})">Delete</button>
                 <input type="text" v-model="todo.modify"/>
-                <button @click="modifyTodo(todo.id)">Modifier la Todo</button>
+                <button @click="modifyTodo({idList, idTodo:todo.id})">Modifier la Todo</button>
             </div>
         </li>
     </ul>
+
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
 export default {
     name: 'Todolist',
+    props: {
+        idList: String,
+    },
     data() {
         return {
             newTodo: '',
-            boolean: false,
-
+            checked: false,
         }
     },
     methods: {
@@ -61,9 +64,6 @@ export default {
             'filter',
             'numberNotDone'
         ]),
-        filtered_todos(){
-            return this.getFilteredTodos(this.filter);
-        }
     }
 }
 </script>

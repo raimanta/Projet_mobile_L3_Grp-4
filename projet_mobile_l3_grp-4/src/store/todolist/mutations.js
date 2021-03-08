@@ -1,12 +1,22 @@
-export function suppTodo(state, id){
-    for(let index in state.todos){
-        if(state.todos[index].id==id){
-            state.todos.splice(index,1);
-            return;
-        }
+
+//ListTodo
+export function addList(state, nom){
+    state.lists.push({
+        id: state.lists,
+        name: nom,
+        todos : [],
+    });
+}
+
+export function suppList(state, idList){
+    state.lists.splice(idList,1);
+
+    for(let i=idList; i<state.lists.length; i++){
+        state.lists[i].id--;
     }
 }
 
+//filter
 export function changeFilter(state, int){
     if(int==1){
         state.filter="all";
@@ -19,38 +29,76 @@ export function changeFilter(state, int){
     }
 }
 
-export function deleteDone(state){
-    let ids = [];
-    for(let index in state.todos){
-        if(state.todos[index].completed){
-            ids.push(state.todos[index].id);
-        }
-    }
-    for(let id in ids){
-        suppTodo(state, ids[id]);
-    }
-}
+//Todo
+export function addTodo(state, payload){
+    let idList = payload.idList;
+    let nom = payload.nom;
 
-export function addTodo(state, nom){
-    state.todos.push({
-        id: state.id,
+    if(!isList(state, idList)) return;
+    
+    state.lists[idList].todos.push({
+        id: state.lists[idList].todos.length,
         name: nom,
         completed: false
     });
-    state.id++;
 }
 
-export function checkTodos(state, boolean){
-    state.todos.forEach(todo => {
-        todo.completed = !boolean;
+export function suppTodo(state, payload){
+    let idList = payload.idList;
+    let idTodo = payload.idTodo;
+
+    if(!isInList(state, idList, idTodo)) return; 
+    
+    state.lists[idList].todos.splice(idTodo,1);
+
+    for(let i=idTodo; i<state.lists[idList].todos.length; i++){
+        state.lists[idList].todos[i].id--;
+    }
+}
+
+export function deleteDone(state, idList){
+    if(!isList(state, idList)) return;
+    for(let i in state.lists[idList].todos){
+        if(state.lists[idList].todos[i].completed){
+
+            suppTodo(state,{idList, idTodo:i});
+        }
+    }
+}
+
+export function checkTodos(state, payload){
+    let idList = payload.idList;
+    let checked = payload.checked;
+    
+    if(!isList(state, idList)) return;
+    console.log( checked );
+    state.lists[idList].todos.forEach(todo => {
+        todo.completed = !checked;
     });
 }
 
-export function modifyTodo(state, id){
-    for(let index in state.todos){
-        if(state.todos[index].id==id){
-            state.todos[index].name = state.todos[index].modify;
-            return;
-        }
+export function modifyTodo(state, payload){
+    let idList = payload.idList;
+    let idTodo = payload.idTodo;
+
+    if(! isInList(state, idList, idTodo)) return;
+
+    state.lists[idList].todos[idTodo].name = state.lists[idList].todos[idTodo].modify;
+}
+
+//Fonction utile
+export function isList(state, idList){
+    for(let i in state.lists)
+        if(state.lists[i].id==idList) return true;
+    
+    return false;
+}
+
+export function isInList(state, idList, idTodo){
+    if(! isList(state, idList)) return false;
+
+    for(let i in state.lists[idList].todos){
+        if(state.lists[idList].todos[i].id==idTodo) return true;
     }
+    return false;
 }

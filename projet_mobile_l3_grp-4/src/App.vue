@@ -1,6 +1,6 @@
 <template>
   <Sidebar/>
-  <Todolist/>
+  <Todolist idList="0"/>
 </template>
 
 <script>

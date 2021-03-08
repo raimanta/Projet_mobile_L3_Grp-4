@@ -1,16 +1,13 @@
-export function getFilteredTodos(state){
-    return function(filter){
-        if(filter=="all"){
-            return state.todos;
+export const getFilteredTodos = (state) => (idList) => {
+        if(state.filter=="done"){
+            return state.lists[idList].todos.filter(todo => todo.completed);
         }
-        else if(filter=="done"){
-            return state.todos.filter(todo => todo.completed);
+
+        if(state.filter=="notDone"){
+            return state.lists[idList].todos.filter(todo => !todo.completed);
         }
-        else if(filter=="notDone"){
-            return state.todos.filter(todo => !todo.completed);
-        }
-        return null;
-    }
+
+        return state.lists[idList].todos;
 }
 
 export function aFaire(){
@@ -29,8 +26,8 @@ export function filter(state){
     return state.filter;
 }
 
-export function numberNotDone(state){
-    return state.todos.filter(todo => !todo.completed).length;
+export const numberNotDone = (state) => (idList) => {
+    return state.lists[idList].todos.filter(todo => !todo.completed).length;
 }
 
 export function liste(state){

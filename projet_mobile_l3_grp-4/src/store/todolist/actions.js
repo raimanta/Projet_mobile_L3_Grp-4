@@ -1,23 +1,35 @@
-export function suppTodo({commit}, id){
-    commit("suppTodo", id);
+//ListTodo
+export function addList({commit}, nom){
+    commit("addTodo", nom);
 }
 
-export function deleteDone({commit}){
-    commit("deleteDone");
+export function suppList({commit}, idList){
+    commit("addTodo", idList);
 }
 
+//filter
 export function changeFilter({commit}, int){
     commit("changeFilter", int);
 }
 
-export function addTodo({commit}, nom){
-    commit("addTodo", nom);
+//Todo
+export function addTodo({commit}, payload/*=> idList, nom*/){
+    commit("addTodo", payload);
 }
 
-export function checkTodos({commit}, boolean){
-    commit("checkTodos", boolean);
+export function suppTodo({commit}, payload/*=> idList, idTodo*/){
+    commit("suppTodo", payload);
 }
 
-export function modifyTodo({commit}, id){
-    commit("modifyTodo", id);
+export function deleteDone({commit}, idList){
+    console.log(idList)
+    commit("deleteDone", idList);
+}
+
+export function checkTodos({commit}, payload/*=> idList, checked*/){
+    commit("checkTodos", payload);
+}
+
+export function modifyTodo({commit}, payload/*=> idList, idTodo*/){
+    commit("modifyTodo", payload);
 }
