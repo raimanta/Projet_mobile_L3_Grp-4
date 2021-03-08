@@ -22,7 +22,7 @@ export function aFaire(){
 export function check(){
     return function(boolean){
         return boolean ? "Check" : "Uncheck";
-    }    
+    }
 }
 
 export function filter(state){
@@ -31,4 +31,9 @@ export function filter(state){
 
 export function numberNotDone(state){
     return state.todos.filter(todo => !todo.completed).length;
+}
+
+export function liste(state){
+    console.log("fonction")
+    return state.lists
 }

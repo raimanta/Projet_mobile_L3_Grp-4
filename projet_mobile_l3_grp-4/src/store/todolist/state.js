@@ -1,34 +1,45 @@
 export default function () {
     return {
-        todos: [
+        lists: [
+            {
+                id: 0,
+                name : 'Liste 1',
+                todos: [
+                    {
+                        id: 0,
+                        name : 'CV',
+                        completed: true,
+                        modify: ""
+                    },
+                    {
+                        id: 1,
+                        name : 'Lettre de motivation',
+                        completed: true,
+                        modify: ""
+                    },
+                    {
+                        id: 2,
+                        name : 'Reussir sa vie',
+                        completed: true,
+                        modify: ""
+                    }
+                ]
+            },
             {
                 id: 1,
-                name : 'Courses',
-                completed : false,
-                modify: ""
-            },
-            {
-                id: 2,
-                name : 'CV',
-                completed: true,
-                modify: ""
-            },
-            {
-                id: 3,
-                name : 'Lettre de motivation',
-                completed: true,
-                modify: ""
-            },
-            {
-                id: 4,
-                name : 'Reussir sa vie',
-                completed: true,
-                modify: ""
+                name : 'Liste 2',
+                todos: [
+                    {
+                        id: 0,
+                        name : 'manger',
+                        completed: false,
+                        modify: ""
+                    }
+                ]
             }
         ],
         newTodo: '',
+        newList: '',
         filter: 'all',
-        boolean: true,
-        id: 5,
     }
 }
