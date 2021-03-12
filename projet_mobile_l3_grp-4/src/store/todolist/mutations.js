@@ -2,7 +2,7 @@
 //ListTodo
 export function addList(state, nom){
     state.lists.push({
-        id: state.lists,
+        id: state.lists.length,
         name: nom,
         todos : [],
     });

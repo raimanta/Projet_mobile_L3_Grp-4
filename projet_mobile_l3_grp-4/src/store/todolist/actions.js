@@ -1,6 +1,6 @@
 //ListTodo
 export function addList({commit}, nom){
-    commit("addTodo", nom);
+    commit("addList", nom);
 }
 
 export function suppList({commit}, idList){

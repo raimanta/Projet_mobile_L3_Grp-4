@@ -1,23 +1,18 @@
 <template>
-  <Sidebar/>
-  <Todolist idList="0"/>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </div>
+  <router-view/>
 </template>
 
 <script>
-import Sidebar from './components/sidebar.vue'
-import Todolist from './components/Todolist.vue'
 
 export default {
   name: 'App',
   components: {
-    Sidebar,
-    Todolist
+
   }
-  /*methods: {
-    changeList(id) {
-        this.currentList = id
-    }
-  }*/
 }
 </script>
 

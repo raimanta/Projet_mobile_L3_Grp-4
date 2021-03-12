@@ -1,22 +1,23 @@
 <template>
+    id = {{idList}}
     <p>Nombre de todo restantes : {{ numberNotDone(idList) }}</p>
     {{ check(checked) }}
     <input type="checkbox" v-model="checked" @click="checkTodos({idList, checked})"/>
 
     <div>
         Filtrer :
-        <button v-on:click="changeFilter(1)">Toutes</button>
-        <button v-on:click="changeFilter(2)">A faire</button>
-        <button v-on:click="changeFilter(3)">Faites</button>
+        <button @:click="changeFilter(1)">Toutes</button>
+        <button @:click="changeFilter(2)">A faire</button>
+        <button @:click="changeFilter(3)">Faites</button>
     </div>
     <br/>
     <div>
-        <button v-on:click="deleteDone(idList)">Supprimer les taches finies</button>
+        <button @click="deleteDone(idList)">Supprimer les taches finies</button>
     </div>
     <br/>
     <div>
         <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
-        <button v-on:click="addTodo({idList, nom:newTodo})">Ajouter todo</button>
+        <button @click="addTodo({idList, nom:newTodo})">Ajouter todo</button>
     </div>
 
     <ul>
@@ -24,7 +25,7 @@
             <input type="checkbox" id="todo.completed" v-model="todo.completed"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
             <div>
-                <button class="bouton" v-on:click="suppTodo({idList, idTodo:todo.id})">Delete</button>
+                <button class="bouton" @click="suppTodo({idList, idTodo:todo.id})">Delete</button>
                 <input type="text" v-model="todo.modify"/>
                 <button @click="modifyTodo({idList, idTodo:todo.id})">Modifier la Todo</button>
             </div>
@@ -38,12 +39,12 @@ import {mapActions, mapGetters} from "vuex";
 export default {
     name: 'Todolist',
     props: {
-        idList: String,
+        idList: Number
     },
     data() {
         return {
             newTodo: '',
-            checked: false,
+            checked: false
         }
     },
     methods: {
@@ -54,7 +55,7 @@ export default {
             'addTodo',
             'checkTodos',
             'modifyTodo'
-        ]),
+        ])
     },
     computed: {
         ...mapGetters('todolist', [
@@ -63,7 +64,12 @@ export default {
             'check',
             'filter',
             'numberNotDone'
-        ]),
+        ])
+    },
+    watch: {
+        '$route' (){
+            //appeler la fonction qui load les donnees ici plus tard
+        }
     }
 }
 </script>
