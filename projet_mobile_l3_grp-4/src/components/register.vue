@@ -1,7 +1,8 @@
 <template>
     <input type="text" v-model="name"/>
+    <input type="text" v-model="email"/>
     <input type="text" v-model="password"/>
-    <button @click="register({name, password})">S'inscrire</button>
+    <button @click="register({name, email, password})">S'inscrire</button>
 </template>
 
 <script>
@@ -11,6 +12,7 @@ export default {
     data() {
         return {
             name: "",
+            email: "",
             password: ""
         }
     },
