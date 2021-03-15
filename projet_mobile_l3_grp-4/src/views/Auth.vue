@@ -2,23 +2,27 @@
     <Login/>
     <br/>
     <Register/>
+    <br/>
+    <button @click="getUser(token)">GetUser</button>
 </template>
 
 <script>
 import Login from '../components/login'
 import Register from '../components/register.vue'
-import {mapActions} from "vuex"
+import {mapActions, mapGetters} from "vuex"
 export default {
     components: {
         Login,
         Register
     },
+    computed: {
+        ...mapGetters('account', ['token'])
+    },
     methods: {
-        ...mapActions('account', ['connect'])
+        ...mapActions('account', ['connect', 'getUser'])
     },
     mounted: function(){
-        //Test pour voir si la connection fonctionne
-        //this.connect({nom: 'toto@toto.com', password: 'totototo'});
+        
     }
 }
 </script>

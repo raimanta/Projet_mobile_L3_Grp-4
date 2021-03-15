@@ -1,7 +1,7 @@
 <template>
-    <input type="text" v-model="name"/>
-    <input type="text" v-model="email"/>
-    <input type="text" v-model="password"/>
+    <input type="text" v-model="name" placeholder="name"/>
+    <input type="text" v-model="email" placeholder="email"/>
+    <input type="text" v-model="password" placeholder="password"/>
     <button @click="register({name, email, password})">S'inscrire</button>
 </template>
 

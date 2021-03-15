@@ -1,3 +1,7 @@
+export function loadTodos(state, data){
+    console.log(data)
+    state.lists = data;
+}
 
 //ListTodo
 export function addList(state, nom){
@@ -29,6 +33,10 @@ export function changeFilter(state, int){
     }
 }
 
+export function completeTodo(state, payload){
+    state.lists.find(list => list.id==payload.idList).todos.find(todo => todo.id==payload.idTodo).completed = payload.completed
+}
+
 //Todo
 export function addTodo(state, payload){
     let idList = payload.idList;
@@ -36,8 +44,8 @@ export function addTodo(state, payload){
 
     if(!isList(state, idList)) return;
     
-    state.lists[idList].todos.push({
-        id: state.lists[idList].todos.length,
+    state.lists.find(list => list.id==idList).todos.push({
+        id: state.lists.find(list => list.id==idList).todos.length,
         name: nom,
         completed: false
     });
@@ -80,10 +88,11 @@ export function checkTodos(state, payload){
 export function modifyTodo(state, payload){
     let idList = payload.idList;
     let idTodo = payload.idTodo;
+    let nom = payload.nom;
 
-    if(! isInList(state, idList, idTodo)) return;
+    //if(! isInList(state, idList, idTodo)) return;
 
-    state.lists[idList].todos[idTodo].name = state.lists[idList].todos[idTodo].modify;
+    state.lists.find(list => list.id==idList).todos.find(todo => todo.id==idTodo).name = nom;
 }
 
 //Fonction utile

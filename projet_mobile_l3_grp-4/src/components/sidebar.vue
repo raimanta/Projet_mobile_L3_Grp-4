@@ -1,32 +1,39 @@
 <template>
     SIDEBAR :
     <ul>
-        <li v-for="list in liste" :key="list.id">
-            <router-link :to="{path: '/todo/'+list.id}">{{ list.name }}  {{list.numberNotDone}}</router-link>
+        <li v-for="list in lists" :key="list.id">
+            <router-link :to="{path: '/todo/'+list.id}">{{ list.name }}</router-link>
         </li>
     </ul>
     <input type="text" v-model="newList">
-    <button @click="addList(newList)">Ajouter la liste</button>
+    <button @click="addList({nom: newList, token: this.$store.state.account.token})">Ajouter la liste</button>
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+
 export default {
     name: 'Sidebar',
     data(){
         return {
-            newList: ""
+            newList: "",
         }
     },
     methods: {
         ...mapActions('todolist', [
             'addList'
-        ]),
+        ])
     },
     computed: {
         ...mapGetters('todolist', [
-            'liste'
+            'lists'
         ]),
+        ...mapGetters('account', [
+            'token'
+        ]),
+    },
+    created() {
+        this.$store.dispatch("todolist/loadTodos", this.$store.state.account.token);
     }
 }
 </script>
