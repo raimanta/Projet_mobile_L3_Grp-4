@@ -21,12 +21,12 @@
 
     <ul>
         <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(idList, filters)" :key="todo.id">
-            <input type="checkbox" @change="completeTodo({idList: idList, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.$store.state.account.token })"/>
+            <input type="checkbox" @change="completeTodo({idList: idList, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.$store.state.account.token }, newTodo='')"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
             <div>
                 <button class="bouton" @click="suppTodo({idList, idTodo:todo.id})">Delete</button>
-                <input type="text" v-model="newTodo"/>
-                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:newTodo, completed: todo.completed, token: this.$store.state.account.token})">Modifier la Todo</button>
+                <input type="text" v-model="changeTodo[todo.id]"/>
+                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.$store.state.account.token}), changeTodo[todo.id]='' ">Modifier la Todo</button>
             </div>
         </li>
     </ul>
@@ -43,6 +43,7 @@ export default {
     data() {
         return {
             newTodo: '',
+            changeTodo: [],
             checked: false,
             filters: "all"
         }

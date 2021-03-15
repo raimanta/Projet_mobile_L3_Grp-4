@@ -6,7 +6,7 @@
         </li>
     </ul>
     <input type="text" v-model="newList">
-    <button @click="addList({nom: newList, token: this.$store.state.account.token})">Ajouter la liste</button>
+    <button @click="addList({nom: newList, token: this.$store.state.account.token}), newList=''">Ajouter la liste</button>
 </template>
 
 <script>
