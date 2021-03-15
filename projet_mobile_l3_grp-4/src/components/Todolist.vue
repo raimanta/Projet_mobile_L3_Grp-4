@@ -16,7 +16,7 @@
     <br/>
     <div>
         <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
-        <button @click="addTodo({idList, nom:newTodo, token: this.$store.state.account.token})">Ajouter todo</button>
+        <button @click="addTodo({idList, nom:newTodo, token: this.$store.state.account.token}, newTodo='' )">Ajouter todo</button>
     </div>
 
     <ul>
@@ -26,7 +26,7 @@
             <div>
                 <button class="bouton" @click="suppTodo({idList, idTodo:todo.id})">Delete</button>
                 <input type="text" v-model="changeTodo[todo.id]"/>
-                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.$store.state.account.token}), changeTodo[todo.id]='' ">Modifier la Todo</button>
+                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.$store.state.account.token}, changeTodo[todo.id] = '') ">Modifier la Todo</button>
             </div>
         </li>
     </ul>
