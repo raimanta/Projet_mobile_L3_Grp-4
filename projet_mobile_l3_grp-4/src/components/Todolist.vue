@@ -1,6 +1,5 @@
 <template>
     id = {{idList}}
-    <p>Nombre de todo restantes : {{ numberNotDone(idList) }}</p>
     {{ check(checked) }}
     <input type="checkbox" v-model="checked" @click="checkTodos({idList, checked})"/>
 
@@ -17,17 +16,17 @@
     <br/>
     <div>
         <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
-        <button @click="addTodo({idList, nom:newTodo})">Ajouter todo</button>
+        <button @click="addTodo({idList, nom:newTodo, token: this.$store.state.account.token})">Ajouter todo</button>
     </div>
 
     <ul>
-        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(idList)" :key="todo.id">
-            <input type="checkbox" id="todo.completed" v-model="todo.completed"/>
+        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(idList, filters)" :key="todo.id">
+            <input type="checkbox" @change="completeTodo({idList: idList, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.$store.state.account.token })"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
             <div>
                 <button class="bouton" @click="suppTodo({idList, idTodo:todo.id})">Delete</button>
-                <input type="text" v-model="todo.modify"/>
-                <button @click="modifyTodo({idList, idTodo:todo.id})">Modifier la Todo</button>
+                <input type="text" v-model="newTodo"/>
+                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:newTodo, completed: todo.completed, token: this.$store.state.account.token})">Modifier la Todo</button>
             </div>
         </li>
     </ul>
@@ -44,7 +43,8 @@ export default {
     data() {
         return {
             newTodo: '',
-            checked: false
+            checked: false,
+            filters: "all"
         }
     },
     methods: {
@@ -54,8 +54,20 @@ export default {
             'deleteDone',
             'addTodo',
             'checkTodos',
-            'modifyTodo'
-        ])
+            'modifyTodo',
+            'completeTodo'
+        ]),
+        modifyFilter(int){
+            if(int==1){
+                this.filters="all"
+            }
+            else if(int==2){
+                this.filters="notDone"
+            }
+            else if(int==3){
+                this.filters="done"
+            }
+        }
     },
     computed: {
         ...mapGetters('todolist', [

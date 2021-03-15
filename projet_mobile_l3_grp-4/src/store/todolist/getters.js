@@ -1,13 +1,15 @@
-export const getFilteredTodos = (state) => (idList) => {
-        if(state.filter=="done"){
-            return state.lists[idList].todos.filter(todo => todo.completed);
+export const getFilteredTodos = (state) => (idList, filter) => {
+        console.log("first todo = "+state.lists[0].todos)
+        console.log(idList)
+        if(filter=="done"){
+            return state.lists.find(list => list.id==idList).todos.filter(todo => todo.completed);
         }
 
-        if(state.filter=="notDone"){
-            return state.lists[idList].todos.filter(todo => !todo.completed);
+        if(filter=="notDone"){
+            return state.lists.find(list => list.id==idList).todos.filter(todo => !todo.completed);
         }
-
-        return state.lists[idList].todos;
+        //plus de correspondance entre idList et son emplacement dans le tableau de lists
+        return state.lists.find(list => list.id==idList).todos;
 }
 
 export function aFaire(){
@@ -30,7 +32,6 @@ export const numberNotDone = (state) => (idList) => {
     return state.lists[idList].todos.filter(todo => !todo.completed).length;
 }
 
-export function liste(state){
-    console.log("fonction")
+export function lists(state){
     return state.lists
 }

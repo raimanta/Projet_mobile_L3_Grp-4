@@ -1,11 +1,11 @@
-export function connect(state, payload){
-    let name = payload.name;
-    let password = payload.password;
-    console.log(name+"  "+password);
+export function connect(state, response){
+    console.log(response);
+    state.token = response.data.token;
+<<<<<<< HEAD
 }
 
-export function register(state, payload){
-    let name = payload.name;
-    let password = payload.password;
-    console.log(name+"  "+password);
+export function getUser(state, response){
+    console.log(response)
+=======
+>>>>>>> 6e9958f5138162be8d27646094c807ec57205ff7
 }

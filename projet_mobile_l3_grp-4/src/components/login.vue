@@ -1,7 +1,7 @@
 <template>
-    <input type="text" v-model="name"/>
+    <input type="text" v-model="email"/>
     <input type="text" v-model="password"/>
-    <button @click="connect({name, password})">Se connecter</button>
+    <button @click="connect({email, password})">Se connecter</button>
 </template>
 
 <script>
@@ -10,8 +10,8 @@ export default {
     name: "Login",
     data() {
         return {
-            name: "",
-            password: ""
+            email: "bill@bill.com",
+            password: "123456"
         }
     },
     methods: {
