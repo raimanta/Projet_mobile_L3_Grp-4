@@ -3,6 +3,7 @@
     <ul>
         <li v-for="list in lists" :key="list.id">
             <router-link :to="{path: '/todo/'+list.id}">{{ list.name }}</router-link>
+            <button @click="suppList({idList: list.id, token: this.$store.state.account.token})">Delete List</button>
         </li>
     </ul>
     <input type="text" v-model="newList">
@@ -21,7 +22,8 @@ export default {
     },
     methods: {
         ...mapActions('todolist', [
-            'addList'
+            'addList',
+            'suppList'
         ])
     },
     computed: {

@@ -20,13 +20,13 @@
     </div>
 
     <ul>
-        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(idList, filters)" :key="todo.id">
+        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(filters)" :key="todo.id">
             <input type="checkbox" @change="completeTodo({idList: idList, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.$store.state.account.token }, newTodo='')"/>
             {{ todo.name }} : {{ aFaire(todo.completed) }}
             <div>
-                <button class="bouton" @click="suppTodo({idList, idTodo:todo.id})">Delete</button>
+                <button class="bouton" @click="suppTodo({idList: idList, idTodo:todo.id, token: this.$store.state.account.token})">Delete</button>
                 <input type="text" v-model="changeTodo[todo.id]"/>
-                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.$store.state.account.token}, changeTodo[todo.id] = '') ">Modifier la Todo</button>
+                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.$store.state.account.token})">Modifier la Todo</button>
             </div>
         </li>
     </ul>
@@ -35,6 +35,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+
 export default {
     name: 'Todolist',
     props: {
@@ -56,7 +57,8 @@ export default {
             'addTodo',
             'checkTodos',
             'modifyTodo',
-            'completeTodo'
+            'completeTodo',
+            'loadTodo'
         ]),
         modifyFilter(int){
             if(int==1){
@@ -77,11 +79,29 @@ export default {
             'check',
             'filter',
             'numberNotDone'
-        ])
+        ]),
+        routeId(){
+            let route = this.$router.currentRoute.path
+            let res;
+            let i = 1;
+            for(;;){
+                let lastInt = parseInt(route.splice(-1))
+                if(isNaN(lastInt)){
+                    break;
+                }
+                res =+ i*lastInt;
+                i++;
+            }
+            return res;
+        }
+    },
+    created() {
+        this.$store.dispatch("todolist/loadTodo", {idList: this.idList, token:this.$store.state.account.token});
     },
     watch: {
         '$route' (){
-            //appeler la fonction qui load les donnees ici plus tard
+            //changer le idList, passer le param de la route
+            this.$store.dispatch("todolist/loadTodo", {idList: this.$router.currentRoute._value.params.id, token:this.$store.state.account.token});
         }
     }
 }

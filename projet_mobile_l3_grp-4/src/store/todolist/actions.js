@@ -25,7 +25,7 @@ export function addList({commit}, payload/*=> nom, token*/){
     }
     
     axios.post('http://138.68.74.39/api/todolist?name='+payload.nom, bodyParameters, config)
-        .then(response => {console.log(response);commit("addList", payload.nom)})
+        .then(response => {console.log("reponse add List :");console.log(response);commit("addList", {nom: payload.nom, idList: response.data.id})})
         .catch(error => console.log(error))
 }
 
@@ -43,9 +43,26 @@ export function completeTodo({commit}, payload/*idList, idTodo, nom, completed, 
         .catch(error => console.log(error))
 }
 
-//pas dans le projet final
-export function suppList({commit}, idList){
-    commit("addTodo", idList);
+export function suppList({commit}, payload/*idList, token*/){
+    const config = {
+        headers: {Authorization : `Bearer ${payload.token}`}
+    }
+
+    console.log(payload.idList);
+
+    axios.delete('http://138.68.74.39/api/todolist/'+payload.idList, config)
+        .then(response => {console.log(response), commit("suppList", payload.idList)})
+        .catch(error => console.log(error))
+}
+
+export function suppTodo({commit}, payload/*=> idList, idTodo*/){
+    const config = {
+        headers : {Authorization : `Bearer ${payload.token}`}
+    }
+
+    axios.delete('http://138.68.74.39/api/todo/'+payload.idTodo, config)
+        .then(response => {console.log(response);commit("suppTodo", payload.idTodo)})
+        .catch(error => console.log(error))
 }
 
 //filter
@@ -64,7 +81,7 @@ export function addTodo({commit}, payload/*=> idList, nom, token*/){
     }
 
     axios.post('http://138.68.74.39/api/todo?name='+payload.nom+'&completed=0&todolist_id='+payload.idList, bodyParameters, config)
-        .then(response => {console.log(response);commit("addTodo", {nom: payload.nom, idList: payload.idList})})
+        .then(response => {console.log("todo");console.log(response);commit("addTodo", response.data)})
         .catch(error => console.log(error))
 }
 
@@ -74,12 +91,8 @@ export function loadTodo({commit}, payload/*=> idList, token*/){
     }
 
     axios.get('http://138.68.74.39/api/todos/'+payload.idList, config)
-        .then(response => commit("loadTodo", {response: response.data, idList: payload.idList}))
+        .then(response => commit("loadTodo", response.data))
         .catch(error => console.log(error))
-}
-
-export function suppTodo({commit}, payload/*=> idList, idTodo*/){
-    commit("suppTodo", payload);
 }
 
 export function deleteDone({commit}, idList){
@@ -101,6 +114,6 @@ export function modifyTodo({commit}, payload/*idList, idTodo, nom, completed, to
     }
 
     axios.patch('http://138.68.74.39/api/todo/'+payload.idTodo+'?name='+payload.nom+'&completed='+payload.completed+'&todolist_id='+payload.idList, bodyParameters ,config)
-        .then(response => {console.log("Modify Todo response :"+response);commit("modifyTodo", {idList: payload.idList, idTodo: payload.idTodo, nom: payload.nom})})
+        .then(response => {console.log("Modify Todo response :"+response);commit("modifyTodo", {idTodo: payload.idTodo, nom: payload.nom})})
         .catch(error => console.log(error))
 }
