@@ -1,6 +1,6 @@
 <template>
-    <input type="text" v-model="email"/>
-    <input type="text" v-model="password"/>
+    <input type="text" placeholder="mail" v-model="email"/>
+    <input type="text" placeholder="password" v-model="password"/>
     <button @click="connect({email, password})">Se connecter</button>
 </template>
 
@@ -10,7 +10,7 @@ export default {
     name: "Login",
     data() {
         return {
-            email: "bill@bill.com",
+            email: "mateo@mateo.com",
             password: "123456"
         }
     },

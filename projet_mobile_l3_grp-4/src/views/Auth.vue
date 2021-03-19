@@ -1,9 +1,21 @@
 <template>
-    <Login/>
-    <br/>
-    <Register/>
-    <br/>
-    <button @click="getUser(token)">GetUser</button>
+    <router-link to="/">Home</router-link>
+    <div v-if="this.token!=''">
+        <p>Vous etes connecte !</p>
+        <button @click="disconnectFct()">Se deconnecter</button>
+        <button @click="showUserFct()">Afficher l'utilisateur</button>
+        <div v-if="showUser">
+            <p>Nom : {{ user.name }}</p>
+            <p>email : {{ user.email }}</p>
+        </div>
+    </div>
+    <div v-else>
+        <p>Vous n'etes pas connecte !</p>
+        <Login/>
+        <br/>
+        <Register/>
+        <br/>
+    </div>
 </template>
 
 <script>
@@ -15,14 +27,29 @@ export default {
         Login,
         Register
     },
+    data(){
+        return {
+            showUser: false,
+            connected: this.token!=""
+        }
+    },
     computed: {
-        ...mapGetters('account', ['token'])
+        ...mapGetters('account', ['token', 'user'])
     },
     methods: {
-        ...mapActions('account', ['connect', 'getUser'])
+        ...mapActions('account', ['connect', 'getUser', 'disconnect']),
+        showUserFct(){
+            this.showUser = true
+            this.getUser(this.token)
+        },
+        disconnectFct(){
+            this.showUser = false
+            this.connected = false
+            this.disconnect()
+        }
     },
-    mounted: function(){
-        
+    mounted(){
+        console.log(this.token)
     }
 }
 </script>

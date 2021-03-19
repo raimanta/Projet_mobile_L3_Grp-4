@@ -1,13 +1,19 @@
 <template>
-    SIDEBAR :
     <ul>
-        <li v-for="list in lists" :key="list.id">
-            <router-link :to="{path: '/todo/'+list.id}">{{ list.name }}</router-link>
-            <button @click="suppList({idList: list.id, token: this.$store.state.account.token})">Delete List</button>
+        <li id="list" class="text1"><router-link class="link" to="/"><p>Home</p></router-link></li>
+        <li id="list" class="text1"><router-link class="link" to="/auth"><p>Account</p></router-link></li>
+        <li id="list" v-for="list in lists" :key="list.id">
+            <p id="text">
+                <router-link class="link" :to="{path: '/todo/'+list.id}">{{ list.name }}</router-link>
+                <img class="link" id="deleteImg" src="../assets/trash.svg" @click="suppList({idList: list.id, token: this.token})"/>
+            </p>
+        </li>
+        <li id="list" class="addList">
+            <input size="15" type="text" v-model="newList">
+            <button @click="addList({nom: newList, token: this.token}), newList=''">Ajouter</button>
         </li>
     </ul>
-    <input type="text" v-model="newList">
-    <button @click="addList({nom: newList, token: this.$store.state.account.token}), newList=''">Ajouter la liste</button>
+    
 </template>
 
 <script>
@@ -35,7 +41,46 @@ export default {
         ]),
     },
     created() {
-        this.$store.dispatch("todolist/loadTodos", this.$store.state.account.token);
+        this.$store.dispatch("todolist/loadTodos", this.token);
     }
 }
 </script>
+
+<style>
+#deleteImg{
+    max-width: 20px;
+    height: auto;
+    vertical-align: baseline;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0;
+}
+#list {
+    padding: 10px;
+    height: 30px;
+    margin: 0 10px;
+    vertical-align: middle;
+    color: black;
+    text-decoration: none;
+    border-bottom: gray 1px solid;
+    line-height: 7px;
+}
+
+#text{
+    vertical-align: middle;
+    margin: 0;
+}
+.link, .link:hover, .link:focus, .link:active {
+     text-decoration: none;
+     color: inherit;
+}
+button {
+    border: none;
+}
+.text1{
+    padding-top: 50px;
+}
+
+</style>

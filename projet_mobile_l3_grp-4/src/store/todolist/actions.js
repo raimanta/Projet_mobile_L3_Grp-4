@@ -7,7 +7,7 @@ export function loadTodos({commit}, token){
         headers: {Authorization : `Bearer ${token}`}
     }
     axios.get('http://138.68.74.39/api/todolists', config)
-        .then(response => {console.log(response.data);commit('loadTodos', response.data)})
+        .then(response => commit('loadTodos', response.data))
         .catch(error => console.log(error))
 }
 
@@ -65,11 +65,6 @@ export function suppTodo({commit}, payload/*=> idList, idTodo*/){
         .catch(error => console.log(error))
 }
 
-//filter
-export function changeFilter({commit}, int){
-    commit("changeFilter", int);
-}
-
 //Todo
 export function addTodo({commit}, payload/*=> idList, nom, token*/){
     const config = {
@@ -91,17 +86,8 @@ export function loadTodo({commit}, payload/*=> idList, token*/){
     }
 
     axios.get('http://138.68.74.39/api/todos/'+payload.idList, config)
-        .then(response => commit("loadTodo", response.data))
+        .then(response => {console.log(response);commit("loadTodo", response.data)})
         .catch(error => console.log(error))
-}
-
-export function deleteDone({commit}, idList){
-    console.log(idList)
-    commit("deleteDone", idList);
-}
-
-export function checkTodos({commit}, payload/*=> idList, checked*/){
-    commit("checkTodos", payload);
 }
 
 export function modifyTodo({commit}, payload/*idList, idTodo, nom, completed, token */){
@@ -116,4 +102,8 @@ export function modifyTodo({commit}, payload/*idList, idTodo, nom, completed, to
     axios.patch('http://138.68.74.39/api/todo/'+payload.idTodo+'?name='+payload.nom+'&completed='+payload.completed+'&todolist_id='+payload.idList, bodyParameters ,config)
         .then(response => {console.log("Modify Todo response :"+response);commit("modifyTodo", {idTodo: payload.idTodo, nom: payload.nom})})
         .catch(error => console.log(error))
+}
+
+export function updateTodo({commit}, idList){
+    commit("updateTodo", idList);
 }

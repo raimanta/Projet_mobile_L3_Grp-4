@@ -1,35 +1,28 @@
 <template>
-    id = {{idList}}
-    {{ check(checked) }}
-    <input type="checkbox" v-model="checked" @click="checkTodos({idList, checked})"/>
-
-    <div>
-        Filtrer :
-        <button @:click="changeFilter(1)">Toutes</button>
-        <button @:click="changeFilter(2)">A faire</button>
-        <button @:click="changeFilter(3)">Faites</button>
-    </div>
-    <br/>
-    <div>
-        <button @click="deleteDone(idList)">Supprimer les taches finies</button>
-    </div>
-    <br/>
-    <div>
-        <input type="text" v-model="newTodo" placeholder="nom de la todo"/>
-        <button @click="addTodo({idList, nom:newTodo, token: this.$store.state.account.token}, newTodo='' )">Ajouter todo</button>
+    <h2>{{ nom(id) }}</h2>
+    {{todos}}
+    <div id="inputAdd">
+        
+        <br/>
+        <input type="text" v-model="newTodo" placeholder="Ajouter une tache"/>
+        <button id="buttonChange" @click="addTodo({idList: id, nom:newTodo, token: this.token}, newTodo='')">Ajouter</button>
     </div>
 
     <ul>
-        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(filters)" :key="todo.id">
-            <input type="checkbox" @change="completeTodo({idList: idList, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.$store.state.account.token }, newTodo='')"/>
-            {{ todo.name }} : {{ aFaire(todo.completed) }}
-            <div>
-                <button class="bouton" @click="suppTodo({idList: idList, idTodo:todo.id, token: this.$store.state.account.token})">Delete</button>
-                <input type="text" v-model="changeTodo[todo.id]"/>
-                <button @click="modifyTodo({idList:idList, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.$store.state.account.token})">Modifier la Todo</button>
-            </div>
+        <li v-bind:class="{ complet: todo.completed }" class="todo" v-for="todo in getFilteredTodos(filter)" :key="todo.id">
+            <img v-if="!todo.completed" @click="completeTodo({idList: id, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.token})" src="../assets/circle.svg"/>
+            <img v-else @click="completeTodo({idList: id, idTodo: todo.id, nom: todo.name, completed: todo.completed?0:1, token: this.token})" src="../assets/check-circle.svg"/>
+            <p v-if="!visibilityTodo[todo.id]">{{ todo.name }}</p>
+            <input v-if="visibilityTodo[todo.id]" type="text" v-model="changeTodo[todo.id]"/>
+            <button id="buttonChange" v-if="visibilityTodo[todo.id]" @click="modifyTodo({idList: id, idTodo:todo.id, nom:changeTodo[todo.id], completed: todo.completed, token: this.token}, changeTodo[todo.id]='', changeVisibility(todo.id))">Modifier la Todo</button>
+            <img @click="changeVisibility(todo.id)" src="../assets/pencil-square.svg"/>
+            <img class="link" id="deleteImg" src="../assets/trash.svg" @click="suppTodo({idList: id, idTodo:todo.id, token: this.token})"/>
         </li>
     </ul>
+
+    <button @click="changeFilter(1)">Toutes</button>
+    <button @click="changeFilter(2)">A faire</button>
+    <button @click="changeFilter(3)">Faites</button>
 
 </template>
 
@@ -45,74 +38,95 @@ export default {
         return {
             newTodo: '',
             changeTodo: [],
-            checked: false,
-            filters: "all"
+            visibilityTodo: [],
+            filter: "all",
+            id: this.$router.currentRoute._value.params.id,
+            todos: ""
         }
     },
     methods: {
         ...mapActions('todolist', [
             'suppTodo',
-            'changeFilter',
-            'deleteDone',
             'addTodo',
-            'checkTodos',
             'modifyTodo',
-            'completeTodo',
-            'loadTodo'
+            'loadTodo',
+            'updateTodo',
+            'completeTodo'
         ]),
-        modifyFilter(int){
+        changeFilter(int){
             if(int==1){
-                this.filters="all"
+                this.filter="all";
             }
             else if(int==2){
-                this.filters="notDone"
+                this.filter="notDone";
             }
             else if(int==3){
-                this.filters="done"
+                this.filter="done";
             }
+        },
+        changeVisibility(id){
+            this.visibilityTodo[id] = !this.visibilityTodo[id]
         }
     },
     computed: {
         ...mapGetters('todolist', [
             'getFilteredTodos',
             'aFaire',
-            'check',
-            'filter',
-            'numberNotDone'
+            'nom'
         ]),
-        routeId(){
-            let route = this.$router.currentRoute.path
-            let res;
-            let i = 1;
-            for(;;){
-                let lastInt = parseInt(route.splice(-1))
-                if(isNaN(lastInt)){
-                    break;
-                }
-                res =+ i*lastInt;
-                i++;
-            }
-            return res;
-        }
+        ...mapGetters('account', [
+            'token'
+        ])
     },
     created() {
-        this.$store.dispatch("todolist/loadTodo", {idList: this.idList, token:this.$store.state.account.token});
+        this.$store.dispatch("todolist/loadTodo", {idList: this.idList, token: this.token});
     },
     watch: {
         '$route' (){
-            //changer le idList, passer le param de la route
-            this.$store.dispatch("todolist/loadTodo", {idList: this.$router.currentRoute._value.params.id, token:this.$store.state.account.token});
+            //on recupere les todos stockees dans le localStorage, puis on les update avec le get via axios.
+            this.id = this.$router.currentRoute._value.params.id
+            if(this.id!=undefined){
+                this.updateTodo(this.id)
+                this.$store.dispatch("todolist/loadTodo", {idList: this.id, token: this.token});
+            }
         }
     }
 }
 </script>
 
 <style>
-
+html {
+    background-color: #F5F5F5;
+}
+h2 {
+    text-align: center;
+}
+input{
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    outline: none;
+    background-color: white;
+}
 .todo{
-    color: red;
+    color: black;
+    display: flex;
+    padding: 20px;
 }
 .complet{
-    color: green;
+    color: gray;
+    text-decoration: line-through;
+}
+p{
+    margin: 0;
+}
+#inputAdd {
+    margin-left: 35px;
+    height: 60px;
+}
+#buttonChange {
+    background-color: white;
+    text-decoration: none;
 }
 </style>
