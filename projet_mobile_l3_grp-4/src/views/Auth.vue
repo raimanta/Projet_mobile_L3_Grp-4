@@ -5,8 +5,8 @@
         <button @click="disconnectFct()">Se deconnecter</button>
         <button @click="showUserFct()">Afficher l'utilisateur</button>
         <div v-if="showUser">
-            <p>Nom : {{ user.name }}</p>
-            <p>email : {{ user.email }}</p>
+            <p>Nom : {{ this.user.name }}</p>
+            <p>email : {{ this.user.email }}</p>
         </div>
     </div>
     <div v-else>

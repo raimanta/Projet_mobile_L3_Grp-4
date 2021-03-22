@@ -3,7 +3,5 @@ export function token(state){
 }
 
 export function user(state){
-    console.log("user :")
-    console.log(state.user)
     return state.user
 }

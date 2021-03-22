@@ -8,7 +8,7 @@ export function loadTodos({commit}, token){
     }
     axios.get('http://138.68.74.39/api/todolists', config)
         .then(response => commit('loadTodos', response.data))
-        .catch(error => console.log(error))
+        .catch(() => commit('loadTodosLocal'))
 }
 
 
@@ -25,7 +25,7 @@ export function addList({commit}, payload/*=> nom, token*/){
     }
     
     axios.post('http://138.68.74.39/api/todolist?name='+payload.nom, bodyParameters, config)
-        .then(response => {console.log("reponse add List :");console.log(response);commit("addList", {nom: payload.nom, idList: response.data.id})})
+        .then(response => commit("addList", {nom: payload.nom, idList: response.data.id}))
         .catch(error => console.log(error))
 }
 
@@ -87,7 +87,7 @@ export function loadTodo({commit}, payload/*=> idList, token*/){
 
     axios.get('http://138.68.74.39/api/todos/'+payload.idList, config)
         .then(response => {console.log(response);commit("loadTodo", response.data)})
-        .catch(error => console.log(error))
+        .catch(() => commit("loadTodoLocal"))
 }
 
 export function modifyTodo({commit}, payload/*idList, idTodo, nom, completed, token */){

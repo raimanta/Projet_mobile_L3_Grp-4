@@ -1,17 +1,20 @@
 export function loadTodos(state, data){
     state.lists = data;
-    for(let i in data){
-        localStorage.setItem('todolist/lists/'+data[i].id, JSON.stringify(data[i]))
-        for(let j in data[i].todos){
-            localStorage.setItem('todolist/lists/'+data[i].id+'/todos/'+data[i].todos[j].id, JSON.stringify(data[i].todos[j]))
-        }
-    }
+    localStorage.setItem('todolist/lists', JSON.stringify(data));
+}
+
+export function loadTodosLocal(state){
+    state.lists = JSON.parse(localStorage.getItem('todolist/lists'));
+    console.log(state.lists);
 }
 
 export function loadTodo(state, data){
-    console.log(data);
     state.todo = data;
     localStorage.setItem('todolist/todo', JSON.stringify(data))
+}
+
+export function loadTodoLocal(state){
+    state.todo =  JSON.parse(localStorage.getItem('todolist/todo'));
 }
 
 export function addList(state, payload){

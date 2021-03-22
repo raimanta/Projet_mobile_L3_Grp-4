@@ -21,7 +21,7 @@ export function register({commit}, payload/*=> nom, email, password*/){
     
     axios.post('http://138.68.74.39/api/register?name='+nom+'&email='+email+'&password='+password)
         .then(response => commit('connect', response))
-        .catch(error => console.log(error))
+        .catch(() => commit('connectLocal'))
 }
 
 export function getUser({commit}, token){

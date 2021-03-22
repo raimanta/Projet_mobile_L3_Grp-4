@@ -15,9 +15,9 @@ export function aFaire(){
     }
 }
 
-export function nom(){
+export function nom(state){
     return function(idList){
-        return JSON.parse(localStorage.getItem('todolist/lists/'+idList)).name
+        return state.lists.filter(list => list.id==idList).name;
     }
 }
 
