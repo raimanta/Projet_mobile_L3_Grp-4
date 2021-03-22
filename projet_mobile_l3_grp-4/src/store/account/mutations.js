@@ -4,16 +4,17 @@ export function connect(state, response){
 }
 
 export function connectLocal(state){
+    console.log("test");
     state.token = localStorage.getItem('account/token');
 }
 
 export function getUser(state, response){
     state.user = response.data
-    localStorage.setItem('account/user', state.user)
+    localStorage.setItem('account/user', JSON.stringify(state.user))
 }
 
 export function getUserLocal(state){
-    state.user = localStorage.getItem('account/user');
+    state.user = JSON.parse(localStorage.getItem('account/user'));
 }
 
 export function disconnect(state){

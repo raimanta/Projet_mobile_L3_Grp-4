@@ -17,7 +17,7 @@ export function aFaire(){
 
 export function nom(state){
     return function(idList){
-        return state.lists.filter(list => list.id==idList).name;
+        return state.lists.find(list => list.id==idList).name;
     }
 }
 

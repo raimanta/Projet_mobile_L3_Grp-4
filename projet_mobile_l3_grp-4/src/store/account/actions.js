@@ -8,7 +8,8 @@ export var connect = async function connect({commit}, payload/*=> email, passwor
         commit('connect', resp)
     }
     catch(err) {
-        console.error(err)
+        console.log(err);
+        commit('connectLocal')
     }
 }
 
@@ -21,7 +22,7 @@ export function register({commit}, payload/*=> nom, email, password*/){
     
     axios.post('http://138.68.74.39/api/register?name='+nom+'&email='+email+'&password='+password)
         .then(response => commit('connect', response))
-        .catch(() => commit('connectLocal'))
+        .catch(error => console.log(error))
 }
 
 export function getUser({commit}, token){
@@ -31,7 +32,7 @@ export function getUser({commit}, token){
 
     axios.get("http://138.68.74.39/api/user", config)
             .then(response => commit('getUser', response))
-            .catch(error => console.log(error))
+            .catch(() => commit('getUserLocal'))
 }
 
 export function disconnect({commit}){
