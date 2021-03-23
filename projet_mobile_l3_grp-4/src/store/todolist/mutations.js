@@ -36,21 +36,26 @@ export function suppList(state, idList){
 
 export function completeTodo(state, payload){
     state.todo.find(todo => todo.id==payload.idTodo).completed = payload.completed
+    state.lists.find(list => payload.idList==list.id).todos.find(todo => todo.id==payload.idTodo).completed = payload.completed
     localStorage.setItem('todolist/todo', JSON.stringify(state.todo))
 }
 
 export function addTodo(state, data){
-    state.todo.push({
+    const todo = {
         id: data.id,
         todolist_id: data.todolist_id,
         name: data.name,
         completed: 0,
-    })
+    }
+    state.todo.push(todo)
+    state.lists.find(list => list.id==data.todolist_id).todos.push(todo);
     localStorage.setItem('todolist/todo', JSON.stringify(state.todo))
 }
 
-export function suppTodo(state, idTodo){
-    state.todo.splice(state.todo.findIndex(todo => todo.id==idTodo),1);
+export function suppTodo(state, payload){
+    let index = state.todo.findIndex(todo => todo.id==payload.idTodo)
+    state.todo.splice(index, 1);
+    state.lists.find(list => list.id==payload.idList).todos.splice(index, 1);
     localStorage.setItem('todolist/todo', JSON.stringify(state.todo))
 }
 
@@ -63,6 +68,3 @@ export function updateTodo(state, idList){
     state.todo = state.lists.find(list => list.id==idList).todos
     localStorage.setItem('todolist/todo', JSON.stringify(state.todo))
 }
-
-//Puisque on accede pas aux todo depuis le todolist/list, on actualise pas directement dans le localStorage
-//cela se fera automatiquement lors du chargement.

@@ -23,6 +23,9 @@
     <button @click="changeFilter(1)">Toutes</button>
     <button @click="changeFilter(2)">A faire</button>
     <button @click="changeFilter(3)">Faites</button>
+    <p v-if="getTodoLeft(id)==0">Aucune Tache restante !</p>
+    <p v-else-if="getTodoLeft(id)==1">Tache restante = {{ getTodoLeft(id) }}</p>
+    <p v-else>Taches restantes = {{ getTodoLeft(id) }}</p>
 
 </template>
 
@@ -72,7 +75,8 @@ export default {
         ...mapGetters('todolist', [
             'getFilteredTodos',
             'aFaire',
-            'nom'
+            'nom',
+            'getTodoLeft'
         ]),
         ...mapGetters('account', [
             'token'

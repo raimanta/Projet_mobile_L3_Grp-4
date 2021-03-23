@@ -39,7 +39,7 @@ export function completeTodo({commit}, payload/*idList, idTodo, nom, completed, 
     }
 
     axios.post('http://138.68.74.39/api/completeTodo/'+payload.idTodo+'?name='+payload.nom+'&completed='+payload.completed+'&todolist_id='+payload.idList, bodyParameters ,config)
-        .then(response => {console.log("Change Todo response :"+response);commit("completeTodo", {idList: payload.idList, idTodo: payload.idTodo, completed: payload.completed})})
+        .then(() => commit("completeTodo", {idList: payload.idList, idTodo: payload.idTodo, completed: payload.completed}))
         .catch(error => console.log(error))
 }
 
@@ -61,7 +61,7 @@ export function suppTodo({commit}, payload/*=> idList, idTodo*/){
     }
 
     axios.delete('http://138.68.74.39/api/todo/'+payload.idTodo, config)
-        .then(response => {console.log(response);commit("suppTodo", payload.idTodo)})
+        .then(response => {console.log(response);commit("suppTodo", {idTodo: payload.idTodo, idList: payload.idList})})
         .catch(error => console.log(error))
 }
 

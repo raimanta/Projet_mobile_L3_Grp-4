@@ -1,10 +1,12 @@
 <template>
+    
     <ul>
-        <li id="list" class="text1"><router-link class="link" to="/"><p>Home</p></router-link></li>
+        <li id="list" class="text1"><router-link class="link" to="/"><p>Home ({{ getTotalTodoLeft }})</p></router-link></li>
         <li id="list" class="text1"><router-link class="link" to="/auth"><p>Account</p></router-link></li>
         <li id="list" v-for="list in lists" :key="list.id">
             <p id="text">
                 <router-link class="link" :to="{path: '/todo/'+list.id}">{{ list.name }}</router-link>
+                ({{ this.getTodoLeft(list.id) }})
                 <img class="link" id="deleteImg" src="../assets/trash.svg" @click="suppList({idList: list.id, token: this.token})"/>
             </p>
         </li>
@@ -34,7 +36,9 @@ export default {
     },
     computed: {
         ...mapGetters('todolist', [
-            'lists'
+            'lists',
+            'getTodoLeft',
+            'getTotalTodoLeft'
         ]),
         ...mapGetters('account', [
             'token'
