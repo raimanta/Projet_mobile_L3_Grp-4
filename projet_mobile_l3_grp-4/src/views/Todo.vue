@@ -4,7 +4,7 @@
             <Sidebar/>
         </div>
         <div id="todolist">
-            <Todolist :idList="id"/>
+            <Todolist/>
         </div>
     </div>
 </template>
@@ -16,12 +16,7 @@ export default {
   components: { 
       Todolist,
       Sidebar
-  },
-    data() {
-        return {
-            id: parseInt(this.$route.params.id) //On met le parseInt sinon on passe un String en prop.
-        }
-    }
+  }
 }
 </script>
 

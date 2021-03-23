@@ -30,7 +30,6 @@ export default {
     data(){
         return {
             showUser: false,
-            connected: this.token!=""
         }
     },
     computed: {
@@ -44,7 +43,6 @@ export default {
         },
         disconnectFct(){
             this.showUser = false
-            this.connected = false
             this.disconnect()
         }
     },

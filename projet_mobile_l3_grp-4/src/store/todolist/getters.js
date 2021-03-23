@@ -9,16 +9,8 @@ export const getFilteredTodos = (state) => (filter) => {
     return state.todo;
 }
 
-export function aFaire(){
-    return function(boolean){
-        return boolean ? "Finito !" : "A Faire !";
-    }
-}
-
 export function nom(state){
     return function(idList){
-        console.log("state :")
-        console.log(state);
         return state.lists.find(list => list.id==idList).name;
     }
 }

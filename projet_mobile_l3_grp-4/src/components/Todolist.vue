@@ -1,6 +1,5 @@
 <template>
     <h2>{{ nom(id) }}</h2>
-    {{todos}}
     <div id="inputAdd">
         
         <br/>
@@ -24,7 +23,7 @@
     <button @click="changeFilter(2)">A faire</button>
     <button @click="changeFilter(3)">Faites</button>
     <p v-if="getTodoLeft(id)==0">Aucune Tache restante !</p>
-    <p v-else-if="getTodoLeft(id)==1">Tache restante = {{ getTodoLeft(id) }}</p>
+    <p v-else-if="getTodoLeft(id)==1">Tache restante = 1</p>
     <p v-else>Taches restantes = {{ getTodoLeft(id) }}</p>
 
 </template>
@@ -83,7 +82,7 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch("todolist/loadTodo", {idList: this.idList, token: this.token});
+        this.$store.dispatch("todolist/loadTodo", {idList: this.id, token: this.token});
     },
     watch: {
         '$route' (){

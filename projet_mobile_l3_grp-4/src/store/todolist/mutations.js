@@ -5,7 +5,6 @@ export function loadTodos(state, data){
 
 export function loadTodosLocal(state){
     state.lists = JSON.parse(localStorage.getItem('todolist/lists'));
-    console.log(state.lists);
 }
 
 export function loadTodo(state, data){
@@ -28,10 +27,8 @@ export function addList(state, payload){
 }
 
 export function suppList(state, idList){
-    console.log(idList)
-    console.log(state.lists.findIndex(list => {console.log(list.id);list.id==idList}));
     state.lists.splice(state.lists.findIndex(list => list.id==idList),1);
-    localStorage.removeItem('todolist/lists/'+idList)
+    localStorage.setItem('todolist/lists', JSON.stringify(state.lists));
 }
 
 export function completeTodo(state, payload){

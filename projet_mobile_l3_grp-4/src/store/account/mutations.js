@@ -4,7 +4,6 @@ export function connect(state, response){
 }
 
 export function connectLocal(state){
-    console.log("test");
     state.token = localStorage.getItem('account/token');
 }
 

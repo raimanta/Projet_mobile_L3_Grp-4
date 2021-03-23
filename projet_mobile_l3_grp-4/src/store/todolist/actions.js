@@ -51,7 +51,7 @@ export function suppList({commit}, payload/*idList, token*/){
     console.log(payload.idList);
 
     axios.delete('http://138.68.74.39/api/todolist/'+payload.idList, config)
-        .then(response => {console.log(response), commit("suppList", payload.idList)})
+        .then(() => commit("suppList", payload.idList))
         .catch(error => console.log(error))
 }
 
@@ -61,7 +61,7 @@ export function suppTodo({commit}, payload/*=> idList, idTodo*/){
     }
 
     axios.delete('http://138.68.74.39/api/todo/'+payload.idTodo, config)
-        .then(response => {console.log(response);commit("suppTodo", {idTodo: payload.idTodo, idList: payload.idList})})
+        .then(() => commit("suppTodo", {idTodo: payload.idTodo, idList: payload.idList}))
         .catch(error => console.log(error))
 }
 
@@ -76,7 +76,7 @@ export function addTodo({commit}, payload/*=> idList, nom, token*/){
     }
 
     axios.post('http://138.68.74.39/api/todo?name='+payload.nom+'&completed=0&todolist_id='+payload.idList, bodyParameters, config)
-        .then(response => {console.log("todo");console.log(response);commit("addTodo", response.data)})
+        .then(response => commit("addTodo", response.data))
         .catch(error => console.log(error))
 }
 
@@ -86,7 +86,7 @@ export function loadTodo({commit}, payload/*=> idList, token*/){
     }
 
     axios.get('http://138.68.74.39/api/todos/'+payload.idList, config)
-        .then(response => {console.log(response);commit("loadTodo", response.data)})
+        .then(response => commit("loadTodo", response.data))
         .catch(() => commit("loadTodoLocal"))
 }
 
@@ -100,7 +100,7 @@ export function modifyTodo({commit}, payload/*idList, idTodo, nom, completed, to
     }
 
     axios.patch('http://138.68.74.39/api/todo/'+payload.idTodo+'?name='+payload.nom+'&completed='+payload.completed+'&todolist_id='+payload.idList, bodyParameters ,config)
-        .then(response => {console.log("Modify Todo response :"+response);commit("modifyTodo", {idTodo: payload.idTodo, nom: payload.nom})})
+        .then(() => commit("modifyTodo", {idTodo: payload.idTodo, nom: payload.nom}))
         .catch(error => console.log(error))
 }
 

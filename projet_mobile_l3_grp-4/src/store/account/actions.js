@@ -17,8 +17,6 @@ export function register({commit}, payload/*=> nom, email, password*/){
     let password = payload.password
     let email = payload.email
     let nom = payload.nom
-    console.log('http://138.68.74.39/api/register?name=toto&email=toto@toto.com&password=totototo')
-    console.log('http://138.68.74.39/api/register?name='+nom+'&email='+email+'&password='+password)
     
     axios.post('http://138.68.74.39/api/register?name='+nom+'&email='+email+'&password='+password)
         .then(response => commit('connect', response))
